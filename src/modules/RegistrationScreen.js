@@ -255,8 +255,11 @@ class RegistrationScreen extends Component {
     }
     let selectedData = [];
     this.state.selectedSkills.map(obj => {
-      console.log(obj,items.filter(e => e.id == obj));
-      let item =items.filter(e => e.id == obj)
+      console.log(
+        obj,
+        items.filter(e => e.id == obj),
+      );
+      let item = items.filter(e => e.id == obj);
       selectedData.push(item[0]);
     });
     console.log('dta', selectedData);
@@ -269,8 +272,8 @@ class RegistrationScreen extends Component {
       skills: selectedData,
     };
     axios
-      .post('https://empdemo.free.beeceptor.com/addEmployee', data)
-      .then(function (response) {
+      .post('https://employee.free.beeceptor.com/addEmployee', data)
+      .then(response => {
         console.log(response);
         if (response && response.status == 200) {
           alert(response.data.msg);
@@ -286,7 +289,7 @@ class RegistrationScreen extends Component {
           selectedSkills: [],
         });
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error);
         alert('Something went wrong...Please try again!');
       });

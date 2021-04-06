@@ -12,7 +12,7 @@ import {
 import SearchBar from '../components/SearchBar';
 import axios from 'axios';
 import data from '../modules/data.json';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 const Item = ({item, onPress}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item]}>
@@ -148,8 +148,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
-  empData: state.employeeReducer,
-})
+// const mapStateToProps = state => ({
+//   empData: state.employeeReducer,
+// })
 
-export default connect(mapStateToProps, null)(EmployeeList);
+// export default connect(mapStateToProps, null)(EmployeeList);
+export default EmployeeList;

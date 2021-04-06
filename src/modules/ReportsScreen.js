@@ -28,8 +28,8 @@ class ReportsScreen extends Component {
   }
 
   componentDidMount() {
-    // this.getDepartmentStatistics();
-    // this.getSkillsStatistics();
+    this.getDepartmentStatistics();
+    this.getSkillsStatistics();
   }
 
   getDepartmentStatistics = () => {
@@ -38,7 +38,7 @@ class ReportsScreen extends Component {
       searchText: '',
     };
     axios
-      .post('https://empdemo.free.beeceptor.com/getDepartmentStatistics', data)
+      .post('https://employee.free.beeceptor.com/getDepartmentStatistics', data)
       .then(response => {
         console.log(response);
         if (response && response.status == 200) {
@@ -66,7 +66,7 @@ class ReportsScreen extends Component {
         }
         this.setState({loading: false});
       })
-      .catch(function (error) {
+      .catch((error)=> {
         console.log(error);
         this.setState({loading: false});
         alert('Something went wrong...Please try again!');
@@ -78,7 +78,7 @@ class ReportsScreen extends Component {
       searchText: '',
     };
     axios
-      .post('https://empdemo.free.beeceptor.com/getSkillsStatistics', data)
+      .post('https://employee.free.beeceptor.com/getSkillsStatistics', data)
       .then(response => {
         console.log(response);
         if (response && response.status == 200) {
@@ -93,7 +93,7 @@ class ReportsScreen extends Component {
           alert('Something went wrong...Please try again!');
         }
       })
-      .catch(function (error) {
+      .catch( (error)=> {
         console.log(error);
         alert('Something went wrong...Please try again!');
       });
@@ -110,7 +110,7 @@ class ReportsScreen extends Component {
             fill={'white'}
             textAnchor={'middle'}
             alignmentBaseline={'middle'}
-            fontSize={24}
+            fontSize={20}
             stroke={'black'}
             strokeWidth={0.2}>
             {data.count}

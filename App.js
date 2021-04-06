@@ -8,9 +8,9 @@ import RegistrationScreen from './src/modules/RegistrationScreen';
 import ReportsScreen from './src/modules/ReportsScreen';
 import EmployeeList from './src/modules/EmployeeList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {persistor, storePersist} from './src/redux/PersistConfig';
-import {Provider} from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+// import {persistor, storePersist} from './src/redux/PersistConfig';
+// import {Provider} from 'react-redux';
+// import { PersistGate } from 'redux-persist/integration/react';
 
 const UserStack = createStackNavigator();
 
@@ -52,8 +52,7 @@ function BottomTabSTack() {
               color={color}
               size={size}
             />
-          ),
-          tabBarBadge: 3,
+          )
         }}
       />
       <Tab.Screen
@@ -77,7 +76,7 @@ function BottomTabSTack() {
 const MainStack = createStackNavigator();
 
 export default function App() {
-  // console.disableYellowBox = true;
+  console.disableYellowBox = true;
   return (
     // <Provider store={storePersist}>
     //   <PersistGate loading={null} persistor={persistor}>
