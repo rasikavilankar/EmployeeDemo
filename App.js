@@ -8,25 +8,27 @@ import RegistrationScreen from './src/modules/RegistrationScreen';
 import ReportsScreen from './src/modules/ReportsScreen';
 import EmployeeList from './src/modules/EmployeeList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {persistor, storePersist} from './src/redux/PersistConfig';
+import {Provider} from 'react-redux';
 
-const HomeStack = createStackNavigator();
+const UserStack = createStackNavigator();
 
-function HomeStackScreen() {
+function UserStackScreen() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen name="Users" component={EmployeeList} />
-      <HomeStack.Screen name="Details" component={EmployeeDetailsScreen} />
-    </HomeStack.Navigator>
+    <UserStack.Navigator>
+      <UserStack.Screen name="Users" component={EmployeeList} />
+      <UserStack.Screen name="Details" component={EmployeeDetailsScreen} />
+    </UserStack.Navigator>
   );
 }
 
-const SettingsStack = createStackNavigator();
+const ReportStack = createStackNavigator();
 
-function SettingsStackScreen() {
+function ReportStackScreen() {
   return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Reports" component={ReportsScreen} />
-    </SettingsStack.Navigator>
+    <ReportStack.Navigator>
+      <ReportStack.Screen name="Reports" component={ReportsScreen} />
+    </ReportStack.Navigator>
   );
 }
 
@@ -40,7 +42,7 @@ function BottomTabSTack() {
       }}>
       <Tab.Screen
         name="Users"
-        component={HomeStackScreen}
+        component={UserStackScreen}
         options={{
           tabBarLabel: 'Users',
           tabBarIcon: ({color, size}) => (
@@ -55,7 +57,7 @@ function BottomTabSTack() {
       />
       <Tab.Screen
         name="Reports"
-        component={SettingsStackScreen}
+        component={ReportStackScreen}
         options={{
           tabBarLabel: 'Reports',
           tabBarIcon: ({color, size}) => (
@@ -74,12 +76,20 @@ function BottomTabSTack() {
 const MainStack = createStackNavigator();
 
 export default function App() {
+  console.disableYellowBox = true;
   return (
-    <NavigationContainer>
-      <MainStack.Navigator headerMode="none" headerShown={false}>
-        <MainStack.Screen name="Registration" component={RegistrationScreen} />
-        <MainStack.Screen name="HomeScreen" component={BottomTabSTack} />
-      </MainStack.Navigator>
-    </NavigationContainer>
+    <Provider store={storePersist}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <MainStack.Navigator headerMode="none" headerShown={false}>
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+            />
+            <MainStack.Screen name="HomeScreen" component={BottomTabSTack} />
+          </MainStack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }

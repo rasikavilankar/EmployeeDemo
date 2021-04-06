@@ -1,8 +1,4 @@
-// Example of Splash, Login and Sign Up in React Native
-// https://aboutreact.com/react-native-login-and-signup/
-
-// Import React and Component
-import React, {useState, createRef} from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -16,282 +12,286 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import {Picker} from '@react-native-picker/picker';
+import MultiSelect from 'react-native-multiple-select';
+import axios from 'axios';
 
-const RegistrationScreen = props => {
-  const [userName, setUserName] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userAddress, setUserAddress] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-  const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
+const items = [
+  {
+    id: '1',
+    name: 'Java',
+  },
+  {
+    id: '2',
+    name: 'Python',
+  },
+  {
+    id: '3',
+    name: 'React-Native',
+  },
+  {
+    id: '4',
+    name: 'React Js',
+  },
+  {
+    id: '5',
+    name: 'Hr',
+  },
+  {
+    id: '6',
+    name: 'Account',
+  },
+];
 
-  const emailInputRef = createRef();
-  const ageInputRef = createRef();
-  const addressInputRef = createRef();
-  const passwordInputRef = createRef();
-
-  const handleSubmitButton = () => {
-    setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
-      return;
-    }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userAge) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userAddress) {
-      alert('Please fill Address');
-      return;
-    }
-    if (!userPassword) {
-      alert('Please fill Password');
-      return;
-    }
-    //Show Loader
-    setLoading(true);
-    var dataToSend = {
-      name: userName,
-      email: userEmail,
-      age: userAge,
-      address: userAddress,
-      password: userPassword,
+class RegistrationScreen extends Component {
+  constructor(props, context) {
+    super(props);
+    this.state = {
+      name: '',
+      age: '',
+      doj: new Date(),
+      department: '',
+      address: '',
+      selectedSkills: [],
     };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+  }
 
-    fetch('http://localhost:3000/api/user/register', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          setIsRegistraionSuccess(true);
-          console.log('Registration Successful. Please Login to proceed');
-        } else {
-          setErrortext(responseJson.msg);
-        }
-      })
-      .catch(error => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
-  };
-  if (isRegistraionSuccess) {
+  render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#307ecc',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={{
-            uri:
-              'http://coenraets.org/blog/wp-content/uploads/2014/02/christophe_coenraets-2.jpg',
-          }}
-          style={{
-            height: 150,
-            resizeMode: 'contain',
-            alignSelf: 'center',
-          }}
-        />
-        <Text style={styles.successTextStyle}>Registration Successful</Text>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={() => props.navigation.navigate('LoginScreen')}>
-          <Text style={styles.buttonTextStyle}>Login Now</Text>
-        </TouchableOpacity>
+      <View style={{flex: 1, backgroundColor: '#307ecc'}}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}>
+          <View style={{alignItems: 'center', paddingTop: 40}}>
+            <Text style={{fontSize: 24}}>Registration Form</Text>
+          </View>
+          <KeyboardAvoidingView enabled>
+            <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={txt => {
+                  this.setState({name: txt});
+                }}
+                maxLength={50}
+                underlineColorAndroid="#f000"
+                placeholder="Enter Name"
+                placeholderTextColor="#8b9cb5"
+                autoCapitalize="sentences"
+                returnKeyType="next"
+                blurOnSubmit={false}
+              />
+            </View>
+            <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={txt => this.setState({age: txt})}
+                underlineColorAndroid="#f000"
+                placeholder="Enter Age"
+                placeholderTextColor="#8b9cb5"
+                keyboardType="numeric"
+                maxLength={3}
+                returnKeyType="next"
+                blurOnSubmit={false}
+              />
+            </View>
+            <View style={styles.SectionStyle}>
+              <DatePicker
+                style={{width: '100%'}}
+                date={this.state.doj}
+                mode="date"
+                placeholder="select date of joining"
+                format="YYYY-MM-DD"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    right: 0,
+                    top: 4,
+                    marginLeft: 0,
+                  },
+                  dateInput: styles.inputStyle,
+                }}
+                onDateChange={date => {
+                  this.setState({doj: date});
+                }}
+              />
+            </View>
+            <View style={styles.SectionStyle}>
+              <View
+                style={{
+                  flex: 1,
+                  color: 'white',
+                  paddingLeft: 15,
+                  paddingRight: 15,
+                  borderWidth: 1,
+                  borderRadius: 30,
+                  borderColor: '#dadae8',
+                  justifyContent: 'center',
+                }}>
+                <Picker
+                  selectedValue={this.state.department}
+                  style={{...styles.inputStyle, color: '#dadae8'}}
+                  mode="dropdown"
+                  onValueChange={(itemValue, itemIndex) => {
+                    this.setState({department: itemValue});
+                  }}>
+                  <Picker.Item label="Select Department" value="" />
+                  <Picker.Item label="HR" value="HR" />
+                  <Picker.Item label="Developmet" value="Developmet" />
+                  <Picker.Item label="Management" value="Management" />
+                  <Picker.Item label="Account" value="Account" />
+                  <Picker.Item label="Testing" value="Testing" />
+                </Picker>
+              </View>
+            </View>
+            <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                multiline={true}
+                numberOfLines={4}
+                maxLength={100}
+                onChangeText={txt => this.setState({address: txt})}
+                underlineColorAndroid="#f000"
+                placeholder="Enter Address"
+                placeholderTextColor="#8b9cb5"
+                autoCapitalize="sentences"
+                returnKeyType="next"
+                onSubmitEditing={Keyboard.dismiss}
+                blurOnSubmit={false}
+              />
+            </View>
+            <View style={{flex: 1, paddingHorizontal: 30, marginTop: 20}}>
+              <MultiSelect
+                items={items}
+                uniqueKey="id"
+                styleDropdownMenu={styles.inputStyle}
+                styleInputGroup={{
+                  backgroundColor: 'transparant',
+                  ...styles.inputStyle,
+                }}
+                styleDropdownMenuSubsection={{backgroundColor: 'transparant'}}
+                onSelectedItemsChange={this.onSelectedItemsChange}
+                selectedItems={this.state.selectedSkills}
+                selectText="Select your skill set"
+                searchInputPlaceholderText="Search Skills"
+                onChangeInput={text => console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{color: '#CCC'}}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+              />
+            </View>
+            <View style={{paddingTop: 40}}>
+              <View
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  flexDirection: 'row',
+                }}>
+                <TouchableOpacity
+                  style={{...styles.buttonStyle, width: '38%'}}
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    this.setState({
+                      name: '',
+                      age: '',
+                      doj: new Date(),
+                      department: [],
+                      address: '',
+                      selectedSkills: [],
+                    });
+                  }}>
+                  <Text style={styles.buttonTextStyle}>CANCEL</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{...styles.buttonStyle, width: '38%', marginLeft: 0}}
+                  activeOpacity={0.5}
+                  onPress={this.handleSubmitButton}>
+                  <Text style={styles.buttonTextStyle}>REGISTER</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                activeOpacity={0.5}
+                onPress={() => {
+                  this.props.navigation.navigate('HomeScreen');
+                }}>
+                <Text style={styles.buttonTextStyle}>Go Home</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </View>
     );
   }
-  return (
-    <View style={{flex: 1, backgroundColor: '#307ecc'}}>
-      {/* <Loader loading={loading} /> */}
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
-        <View style={{alignItems: 'center'}}>
-          <Image
-            source={{
-              uri:
-                'http://coenraets.org/blog/wp-content/uploads/2014/02/christophe_coenraets-2.jpg',
-            }}
-            style={{
-              width: '50%',
-              height: 100,
-              resizeMode: 'contain',
-              margin: 30,
-            }}
-          />
-        </View>
-        <KeyboardAvoidingView enabled>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserName => setUserName(UserName)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Name"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                emailInputRef.current && emailInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserEmail => setUserEmail(UserEmail)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Email"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="email-address"
-              ref={emailInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                passwordInputRef.current && passwordInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <DatePicker
-              style={{width: '100%'}}
-              date={date}
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              //   minDate="2016-05-01"
-              //   maxDate="2016-06-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  right: 0,
-                  top: 4,
-                  marginLeft: 0,
-                },
-                dateInput: styles.inputStyle,
-                // ... You can check the source to find the other keys.
-              }}
-              onDateChange={date => {
-                this.setState({date: date});
-              }}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <Picker
-              selectedValue={'java'}
-              style={styles.inputStyle}
-              onValueChange={(itemValue, itemIndex) => {}}>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker>
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserPassword => setUserPassword(UserPassword)}
-              underlineColorAndroid="#f000"
-              multiline={true}
-              numberOfLines={4}
-              placeholder="Enter Password"
-              placeholderTextColor="#8b9cb5"
-              ref={passwordInputRef}
-              returnKeyType="next"
-              secureTextEntry={true}
-              onSubmitEditing={() =>
-                ageInputRef.current && ageInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserAge => setUserAge(UserAge)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Age"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
-              ref={ageInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                addressInputRef.current && addressInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={UserAddress => setUserAddress(UserAddress)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Address"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              ref={addressInputRef}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          {errortext != '' ? (
-            <Text style={styles.errorTextStyle}>{errortext}</Text>
-          ) : null}
-          <View style={{paddingTop: 40}}>
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={handleSubmitButton}>
-              <Text style={styles.buttonTextStyle}>REGISTER</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={() => {
-                props.navigation.navigate('HomeScreen');
-              }}>
-              <Text style={styles.buttonTextStyle}>Go Home</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
-  );
-};
+
+  onSelectedItemsChange = selectedSkills => {
+    console.log('selectedSkills', selectedSkills);
+
+    this.setState({selectedSkills});
+  };
+
+  handleSubmitButton = () => {
+    if (
+      !this.state.name ||
+      !this.state.age ||
+      !this.state.address ||
+      !this.state.doj ||
+      !this.state.department ||
+      this.state.selectedSkills.length == 0
+    ) {
+      alert('Please fill all the details');
+      return;
+    }
+    let selectedData = [];
+    this.state.selectedSkills.map(obj => {
+      console.log(obj,items.filter(e => e.id == obj));
+      let item =items.filter(e => e.id == obj)
+      selectedData.push(item[0]);
+    });
+    console.log('dta', selectedData);
+    var data = {
+      name: this.state.name,
+      age: this.state.age,
+      department: this.state.department,
+      address: this.state.address,
+      doj: this.state.doj,
+      skills: selectedData,
+    };
+    axios
+      .post('https://employeedemo.free.beeceptor.com/addEmployee', data)
+      .then(function (response) {
+        console.log(response);
+        if (response && response.status == 200) {
+          alert(response.data.msg);
+        } else {
+          alert('Something went wrong...Please try again!');
+        }
+        this.setState({
+          name: '',
+          age: '',
+          doj: new Date(),
+          department: [],
+          address: '',
+          selectedSkills: [],
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert('Something went wrong...Please try again!');
+      });
+  };
+}
 
 const styles = StyleSheet.create({
   SectionStyle: {
