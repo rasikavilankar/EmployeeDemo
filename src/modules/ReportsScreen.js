@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {PieChart} from 'react-native-svg-charts';
 import {Text} from 'react-native-svg';
 import {BarChart, Grid} from 'react-native-svg-charts';
-import {View, Text as T,ScrollView} from 'react-native';
+import {View, Text as T, ScrollView} from 'react-native';
 import axios from 'axios';
+import Loader from '../components/LoadingScreen';
 
 class ReportsScreen extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class ReportsScreen extends Component {
       departmentData: [
         {
           key: 1,
-          name:'none',
+          name: 'none',
           count: 100,
           svg: {
             fill: 'gray',
@@ -21,7 +22,8 @@ class ReportsScreen extends Component {
         },
       ],
       skillsData: [100],
-      skills:[{name:'none',}]
+      skills: [{name: 'none'}],
+      loading: false,
     };
   }
 
@@ -31,6 +33,7 @@ class ReportsScreen extends Component {
   }
 
   getDepartmentStatistics = () => {
+    this.setState({loading: true});
     let data = {
       searchText: '',
     };
@@ -61,9 +64,11 @@ class ReportsScreen extends Component {
         } else {
           alert('Something went wrong...Please try again!');
         }
+        this.setState({loading: false});
       })
       .catch(function (error) {
         console.log(error);
+        this.setState({loading: false});
         alert('Something went wrong...Please try again!');
       });
   };
@@ -83,7 +88,7 @@ class ReportsScreen extends Component {
           res.map((e, i) => {
             newData.push(e.count);
           });
-          this.setState({skillsData: newData,skills: response.data.data});
+          this.setState({skillsData: newData, skills: response.data.data});
         } else {
           alert('Something went wrong...Please try again!');
         }
@@ -130,12 +135,23 @@ class ReportsScreen extends Component {
       ));
     const data = [10, 5, 25, 15, 20];
     return (
-      <ScrollView style={{paddingTop: 30,marginBottom:50, paddingHorizontal: 20}}>
-        <T style={{fontSize: 20,}}>{'Number of people by department:'}</T>
+      <ScrollView
+        style={{paddingTop: 30, marginBottom: 50, paddingHorizontal: 20}}>
+        <Loader
+          loading={this.state.loading}
+          onDismiss={() => this.setState({loading: false})}
+        />
+        <T style={{fontSize: 20}}>{'Number of people by department:'}</T>
         <View>
           {this.state.departmentData.map((e, i) => {
             return (
-              <View key={i} style={{flexDirection: 'row',paddingVertical:10,justifyContent:'flex-start'}}>
+              <View
+                key={i}
+                style={{
+                  flexDirection: 'row',
+                  paddingVertical: 10,
+                  justifyContent: 'flex-start',
+                }}>
                 <View
                   style={{
                     backgroundColor: e.color,
@@ -159,18 +175,29 @@ class ReportsScreen extends Component {
             <Labels />
           </PieChart>
         </View>
-        <T style={{
-    paddingVertical: 10,
-    fontSize: 20,}}>Number of people in a given skillset:</T>
+        <T
+          style={{
+            paddingVertical: 10,
+            fontSize: 20,
+          }}>
+          Number of people in a given skillset:
+        </T>
         <View>
-          {this.state.skills && this.state.skills.map((e, i) => {
-            return (
-              <View key={i} style={{flexDirection: 'row',paddingVertical:10,justifyContent:'flex-start'}}>
-                <T style={{marginRight:20}}>{i+1}</T>
-                <T>{e.name}</T>
-              </View>
-            );
-          })}
+          {this.state.skills &&
+            this.state.skills.map((e, i) => {
+              return (
+                <View
+                  key={i}
+                  style={{
+                    flexDirection: 'row',
+                    paddingVertical: 10,
+                    justifyContent: 'flex-start',
+                  }}>
+                  <T style={{marginRight: 20}}>{i + 1}</T>
+                  <T>{e.name}</T>
+                </View>
+              );
+            })}
         </View>
         <View style={{flexDirection: 'row', height: 200, padding: 16}}>
           <BarChart

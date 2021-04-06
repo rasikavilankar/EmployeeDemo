@@ -11,6 +11,8 @@ import {
 
 import SearchBar from '../components/SearchBar';
 import axios from 'axios';
+import data from '../modules/data.json';
+import { connect } from 'react-redux';
 
 const Item = ({item, onPress}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item]}>
@@ -19,133 +21,6 @@ const Item = ({item, onPress}) => (
   </TouchableOpacity>
 );
 
-const data = [
-  {
-    name: 'Rasika Vilankar',
-    age: '25',
-    doj: '22/04/2021',
-    address: 'mumbai',
-    department: 'Development',
-    skills: [
-      {
-        id: '1',
-        name: 'Java',
-      },
-      {
-        id: '2',
-        name: 'Python',
-      },
-      {
-        id: '3',
-        name: 'React-Native',
-      },
-      {
-        id: '4',
-        name: 'React Js',
-      },
-    ],
-  },
-  {
-    name: 'Neha',
-    age: '25',
-    doj: '22/04/2021',
-    address: 'mumbai',
-    department: 'Development',
-    skills: [
-      {
-        id: '1',
-        name: 'Java',
-      },
-      {
-        id: '2',
-        name: 'Python',
-      },
-      {
-        id: '3',
-        name: 'React-Native',
-      },
-      {
-        id: '4',
-        name: 'React Js',
-      },
-    ],
-  },
-  {
-    name: 'Aman',
-    age: '25',
-    doj: '22/04/2021',
-    address: 'mumbai',
-    department: 'Development',
-    skills: [
-      {
-        id: '1',
-        name: 'Java',
-      },
-      {
-        id: '2',
-        name: 'Python',
-      },
-      {
-        id: '3',
-        name: 'React-Native',
-      },
-      {
-        id: '4',
-        name: 'React Js',
-      },
-    ],
-  },
-  {
-    name: 'Priya',
-    age: '25',
-    doj: '22/04/2021',
-    address: 'mumbai',
-    department: 'Hr',
-    skills: [
-      {
-        id: '1',
-        name: 'Java',
-      },
-      {
-        id: '2',
-        name: 'Python',
-      },
-      {
-        id: '3',
-        name: 'React-Native',
-      },
-      {
-        id: '4',
-        name: 'React Js',
-      },
-    ],
-  },
-  {
-    name: 'Nayan',
-    age: '25',
-    doj: '22/04/2021',
-    address: 'mumbai',
-    department: 'Account',
-    skills: [
-      {
-        id: '1',
-        name: 'Java',
-      },
-      {
-        id: '2',
-        name: 'Python',
-      },
-      {
-        id: '3',
-        name: 'React-Native',
-      },
-      {
-        id: '4',
-        name: 'React Js',
-      },
-    ],
-  },
-];
 class EmployeeList extends Component {
   constructor(props) {
     super(props);
@@ -156,6 +31,7 @@ class EmployeeList extends Component {
       refresh: false,
     };
   }
+
   componentDidMount() {
     // this.getEmployeeList();
   }
@@ -191,7 +67,6 @@ class EmployeeList extends Component {
     );
   };
   render() {
-    var employee = data;
     return (
       <SafeAreaView style={styles.container}>
         <SearchBar
@@ -273,4 +148,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmployeeList;
+const mapStateToProps = state => ({
+  empData: state.employeeReducer,
+})
+
+export default connect(mapStateToProps, null)(EmployeeList);

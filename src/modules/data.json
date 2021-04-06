@@ -1,0 +1,183 @@
+[
+    {
+        "name": "Rasika Vilankar",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Development",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            },
+            {
+                "id": "3",
+                "name": "Hr"
+            },
+            {
+                "id": "4",
+                "name": "Account"
+            },
+            {
+                "id": "5",
+                "name": "React-Native"
+            },
+            {
+                "id": "6",
+                "name": "React-js"
+            }
+        ]
+    },
+    {
+        "name": "Aman Pandey",
+        "age": "24",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Testing",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            }
+        ]
+    },
+    {
+        "name": "Madhura Deshpande",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Development",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            }
+        ]
+    },
+    {
+        "name": "Priti Sigh",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Development",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            }
+        ]
+    },
+    {
+        "name": "Karan Rao",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Development",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            },
+            {
+                "id": "3",
+                "name": "Hr"
+            },
+            {
+                "id": "4",
+                "name": "Account"
+            }
+        ]
+    },
+    {
+        "name": "Neha Sharma",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Development",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            }
+        ]
+    },
+    {
+        "name": "Akshay Vare",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "Accounts",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Hr"
+            }
+        ]
+    },
+    {
+        "name": "Tushar Alave",
+        "age": "25",
+        "doj": "22/04/2021",
+        "address": "mumbai",
+        "department": "HR",
+        "skills": [
+            {
+                "id": "2",
+                "name": "Hr"
+            },
+            {
+                "id": "1",
+                "name": "Account"
+            }
+        ]
+    },
+    {
+        "name": "Reshma SHinde",
+        "age": "25",
+        "doj": "23/04/2021",
+        "address": "Pune",
+        "department": "Management",
+        "skills": [
+            {
+                "id": "1",
+                "name": "Java"
+            },
+            {
+                "id": "2",
+                "name": "Python"
+            },
+            {
+                "id": "3",
+                "name": "Hr"
+            },
+            {
+                "id": "4",
+                "name": "Account"
+            }
+        ]
+    }
+]
