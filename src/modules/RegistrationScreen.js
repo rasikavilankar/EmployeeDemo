@@ -269,7 +269,7 @@ class RegistrationScreen extends Component {
       skills: selectedData,
     };
     axios
-      .post('https://employeedemo.free.beeceptor.com/addEmployee', data)
+      .post('https://empdemo.free.beeceptor.com/addEmployee', data)
       .then(function (response) {
         console.log(response);
         if (response && response.status == 200) {

@@ -42,7 +42,7 @@ class Loader extends Component {
             }}>
             <Image
               resizeMode="cover"
-              source={require('../assets/NewDesigns/loader-gif.gif')}
+              source={require('../modules/loader-gif.gif')}
               style={{width: '90%', height: '90%', alignSelf: 'center'}}
             />
             {isMessagePresent ? (
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparant',
+    backgroundColor: 'white',
   },
   indicatorBox: {
     borderRadius: 10,
