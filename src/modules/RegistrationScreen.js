@@ -14,6 +14,8 @@ import DatePicker from 'react-native-datepicker';
 import {Picker} from '@react-native-picker/picker';
 import MultiSelect from 'react-native-multiple-select';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import * as employeeAction from './reduxRef/EmployeeAction'
 
 const items = [
   {
@@ -81,6 +83,7 @@ class RegistrationScreen extends Component {
                 autoCapitalize="sentences"
                 returnKeyType="next"
                 blurOnSubmit={false}
+                defaultValue={this.state.name}
               />
             </View>
             <View style={styles.SectionStyle}>
@@ -92,13 +95,14 @@ class RegistrationScreen extends Component {
                 placeholderTextColor="#8b9cb5"
                 keyboardType="numeric"
                 maxLength={3}
+                defaultValue={this.state.age}
                 returnKeyType="next"
                 blurOnSubmit={false}
               />
             </View>
             <View style={styles.SectionStyle}>
               <DatePicker
-                style={{width: '100%'}}
+                style={{width: '100%',color:'#8b9cb5'}}
                 date={this.state.doj}
                 mode="date"
                 placeholder="select date of joining"
@@ -112,7 +116,7 @@ class RegistrationScreen extends Component {
                     top: 4,
                     marginLeft: 0,
                   },
-                  dateInput: styles.inputStyle,
+                  dateInput: {...styles.inputStyle,color:'#8b9cb5'},
                 }}
                 onDateChange={date => {
                   this.setState({doj: date});
@@ -133,17 +137,17 @@ class RegistrationScreen extends Component {
                 }}>
                 <Picker
                   selectedValue={this.state.department}
-                  style={{...styles.inputStyle, color: '#dadae8'}}
+                  style={{...styles.inputStyle, color: '#8b9cb5'}}
                   mode="dropdown"
                   onValueChange={(itemValue, itemIndex) => {
                     this.setState({department: itemValue});
                   }}>
-                  <Picker.Item label="Select Department" value="" />
-                  <Picker.Item label="HR" value="HR" />
-                  <Picker.Item label="Developmet" value="Developmet" />
-                  <Picker.Item label="Management" value="Management" />
-                  <Picker.Item label="Account" value="Account" />
-                  <Picker.Item label="Testing" value="Testing" />
+                  <Picker.Item label="Select Department" value="" style={{color:'#FFFFFF'}} />
+                  <Picker.Item label="HR" value="HR" style={{color:'#FFFFFF'}}/>
+                  <Picker.Item label="Developmet" value="Developmet" style={{color:'#FFFFFF'}}/>
+                  <Picker.Item label="Management" value="Management" style={{color:'#FFFFFF'}}/>
+                  <Picker.Item label="Account" value="Account" style={{color:'#FFFFFF'}}/>
+                  <Picker.Item label="Testing" value="Testing" style={{color:'#FFFFFF'}}/>
                 </Picker>
               </View>
             </View>
@@ -161,6 +165,7 @@ class RegistrationScreen extends Component {
                 returnKeyType="next"
                 onSubmitEditing={Keyboard.dismiss}
                 blurOnSubmit={false}
+                defaultValue={this.state.address}
               />
             </View>
             <View style={{flex: 1, paddingHorizontal: 30, marginTop: 20}}>
@@ -171,6 +176,7 @@ class RegistrationScreen extends Component {
                 styleInputGroup={{
                   backgroundColor: 'transparant',
                   ...styles.inputStyle,
+                  color:'#8b9cb5'
                 }}
                 styleDropdownMenuSubsection={{backgroundColor: 'transparant'}}
                 onSelectedItemsChange={this.onSelectedItemsChange}
@@ -241,7 +247,7 @@ class RegistrationScreen extends Component {
     this.setState({selectedSkills});
   };
 
-  handleSubmitButton = () => {
+   handleSubmitButton = async () => {
     if (
       !this.state.name ||
       !this.state.age ||
@@ -271,15 +277,20 @@ class RegistrationScreen extends Component {
       doj: this.state.doj,
       skills: selectedData,
     };
+  
     axios
       .post('https://employee.free.beeceptor.com/addEmployee', data)
-      .then(response => {
+      .then(async(response) => {
         console.log(response);
         if (response && response.status == 200) {
           alert(response.data.msg);
+          console.log("before updation",this.props.empDetails);
+          await this.props.addEmployee(data);
+          console.log("after updation",this.props.empDetails)
         } else {
           alert('Something went wrong...Please try again!');
         }
+        alert("redux data",this.props.empDetails.data);
         this.setState({
           name: '',
           age: '',
@@ -345,4 +356,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegistrationScreen;
+const mapStateToProps = state => ({
+  empDetails: state.employeeReducer
+})
+
+const mapDispatchToProps = dispatch => ({
+  addEmployee: data => dispatch(employeeAction.addEmpDetails(data)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationScreen)

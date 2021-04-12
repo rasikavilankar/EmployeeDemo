@@ -1,6 +1,6 @@
 import * as actionTypes from '../../../src/redux/Actions'
 
-export const fetchEmpData = (token) => ({
-	type: actionTypes.FETCH_EMPLOYEE_DATA,
+export const addEmpDetails = (token) => ({
+	type: actionTypes.ADD_EMP_DETAILS,
 	payload: token,
 })

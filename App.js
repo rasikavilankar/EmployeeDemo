@@ -8,9 +8,8 @@ import RegistrationScreen from './src/modules/RegistrationScreen';
 import ReportsScreen from './src/modules/ReportsScreen';
 import EmployeeList from './src/modules/EmployeeList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import {persistor, storePersist} from './src/redux/PersistConfig';
-// import {Provider} from 'react-redux';
-// import { PersistGate } from 'redux-persist/integration/react';
+import { storePersist} from './src/redux/PersistConfig';
+import {Provider} from 'react-redux';
 
 const UserStack = createStackNavigator();
 
@@ -78,8 +77,7 @@ const MainStack = createStackNavigator();
 export default function App() {
   console.disableYellowBox = true;
   return (
-    // <Provider store={storePersist}>
-    //   <PersistGate loading={null} persistor={persistor}>
+    <Provider store={storePersist}>
         <NavigationContainer>
           <MainStack.Navigator headerMode="none" headerShown={false}>
             <MainStack.Screen
@@ -89,7 +87,6 @@ export default function App() {
             <MainStack.Screen name="HomeScreen" component={BottomTabSTack} />
           </MainStack.Navigator>
         </NavigationContainer>
-    //   </PersistGate>
-    // </Provider>
+     </Provider>
   );
 }

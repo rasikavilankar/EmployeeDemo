@@ -40,14 +40,13 @@ class EmployeeDetailsScreen extends Component {
             <View
               style={{
                 flex: 1,
-                justifyContent: 'space-between',
                 flexDirection: 'row',
                 flexWrap: 'wrap',
               }}>
               {this.state.item.skills &&
                 this.state.item.skills.map((e, i) => {
                   return (
-                    <View style={{paddingHorizontal: 10}}>
+                    <View style={{paddingRight: 10}}>
                       <TouchableOpacity key={i} style={styles.buttonContainer}>
                         <Text>{e.name}</Text>
                       </TouchableOpacity>
